@@ -32,7 +32,7 @@ public class UserService {
 		Employee emp4 = new Employee(4, "test123", "Tim", "Ameye", "tim.ameye@student.kuleuven.be", "4206", 4, "user");
 		Employee emp5 = new Employee(5, "test123", "Bert", "Outtier", "bert.outtier@student.kuleuven.be", "4207", 5, "user");
 		Employee emp6 = new Employee(6, "test123", "Gonzalo", "Parra", "gonzalo.parra@cs.kuleuven.be‎", "4208", 6, "user");
-		Employee emp7 = new Employee(7, "test123", "Erik", "Duval", " ‎erik.duval@cs.kuleuven.be]‎", "4208", 7, "user");
+		Employee emp7 = new Employee(7, "test123", "Erik", "Duval", " ‎erik.duval@cs.kuleuven.be‎", "4208", 7, "user");
 		Employee emp8 = new Employee(8, "test123", "Jannik", "Persoons", "‎jannik.persoons@capgemini.com", "4208", 8, "admin");
 
 		employeeSet.add(emp1);
