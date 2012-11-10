@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<script src="base64.js"></script>
+<script>
+var signature;
+var evidence1;
+var evidence2;
+function imageToBase64Callback(e, variable, callback) {
+	this[variable] = base64ArrayBuffer(e.currentTarget.response);
+	if(callback){
+		callback();
+	}
+};
+
+function loadSignature(){
+	loadImageIntoVariable('images/signature.png', imageToBase64Callback, "signature", loadEvidence1);
+}
+function loadEvidence1(){
+	loadImageIntoVariable('images/invoiceExample.png', imageToBase64Callback, "evidence1", loadEvidence2);
+}
+function loadEvidence2(){
+	loadImageIntoVariable('images/invoice2example.png', imageToBase64Callback,"evidence2");
+}
+
+
+function createExpenseForm(){
+	var expenseForm = new Object();
+	expenseForm.date = new Date();
+	expenseForm.employeeId = 1;
+	expenseForm.signature = signature;
+	expenseForm.remarks = "test general remark";
+	expenseForm.notification = true;
+	expenseForm.expenses = new Array();
+	
+	var expense1 = new Object();
+	expense1.date = new Date(2012,9,24);
+	expense1.projectCode = "G20AERZ";
+	expense1.currency= "EUR";
+	expense1.amount = 10.2;
+	expense1.remarks = "parking";
+	expense1.evidence= evidence1;
+	expense1.expenseTypeId = 6;
+	expense1.expenseLocationId = 1;
+	
+	
+	var expense2 = new Object();
+	expense2.date = new Date(2012,9,12);
+	expense2.projectCode = "G35AERZ";
+	expense2.amount = 250.5;
+	expense2.currency= "USD";
+	expense2.remarks = "hotel test";
+	expense2.evidence= evidence2;
+	expense2.expenseTypeId = 1;
+	expense2.expenseLocationId = 2;
+	
+	expenseForm.expenses[0] = expense1;
+	expenseForm.expenses[1] = expense2;
+	
+	return expenseForm;
+}
+
+
+
+loadSignature();
+
+function createAndSend(){
+	var expenseForm = createExpenseForm();
+	var expenseRequest = new Object();
+	expenseRequest.token = document.getElementById('token').value;
+	expenseRequest.expenseForm = expenseForm;
+
+	var url = "resources/expenseService/saveExpense";
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+
+	//Send the proper header information along with the request
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.send(JSON.stringify(expenseRequest));
+
+	xhr.onreadystatechange = function() {//Call a function when the state changes.
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			alert(xhr.responseText);
+		}
+		if(xhr.readyState == 2 && xhr.status == 204) {
+			alert("access denied");
+		}
+	}
+}
+
+
+
+
+
+</script>
+
+
+</head>
+<body>
+getProjectCodeSuggestion:
+<form action="resources/expenseService/getProjectCodeSuggestion" method="post">
+keyword:<input type="text" name="keyword"><br>
+<input type="submit" value="suggest"><br>
+</form>
+<br>
+
+saveExpense:
+<form action="javascript:createAndSend()">
+token:<input type="text" name="token" id="token"><br>
+<div id="expenseFormDiv"></div><br>
+<script>
+document.getElementById('expenseFormDiv').innerHTML=JSON.stringify(createExpenseForm());
+</script>
+<input type="submit" value="sendExpenseForm"><br>
+
+</form>
+<br>
+getExpenseFormPDF:
+<form action="resources/expenseService/getExpenseFormPDF" method="post">
+token:<input type="text" name="token"><br>
+expenseFormId:<input type="text" name="expenseFormId"><br>
+<input type="submit" value="generate"><br>
+</form>
+<br>
+
+(Admin:) getExpenseForms:
+<form action="resources/expenseService/getExpenseForms" method="post">
+token:<input type="text" name="token"><br>
+<input type="submit" value="get"><br>
+</form>
+<br>
+Admin: changeState:
+<form action="resources/expenseService/changeState" method="post">
+token:<input type="text" name="token"><br>
+expenseFormId:<input type="text" name="expenseFormId"><br>
+statusId:<input type="text" name="statusId"><br>
+<input type="submit" value="changeState"><br>
+</form>
+<br>
+
+
+
+
+
+</body>
+</html>
