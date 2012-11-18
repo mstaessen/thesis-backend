@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -47,7 +48,7 @@ public class UserService {
 
 	@POST
 	@Path("/login")
-	public String login(@FormParam("email") String email, @FormParam("password") String password) {
+	public String login(@FormParam("email") String email, @FormParam("password") String password, @Context HttpServletResponse response) {
 		String token = null;
 		Iterator<Employee> it = employeeSet.iterator();
 		while (it.hasNext()) {
@@ -55,25 +56,27 @@ public class UserService {
 			if (StringUtils.areStringsEqual(emp.getEmail(), email) && StringUtils.areStringsEqual(emp.getPassword(), password)) {
 				token = UUID.randomUUID().toString();
 				context.setAttribute(token, new ExpenseContext(emp, new Date()));
+				response.setHeader("Access-Control-Allow-Origin", "*");
 				return token;
 			}
 		}
-
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		return token;
 
 	}
 
 	@POST
 	@Path("/logout")
-	public void logout(@FormParam("token") String token) {
+	public void logout(@FormParam("token") String token, @Context HttpServletResponse response) {
 		context.removeAttribute(token);
 	}
 
 	@POST
 	@Path("/getEmployee")
 	@Produces("application/json")
-	public Employee getEmployee(@FormParam("token") String token) {
+	public Employee getEmployee(@FormParam("token") String token, @Context HttpServletResponse response) {
 		ExpenseContext expContext = TokenUtil.accessToken(context, token);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		if (expContext != null) {
 			return expContext.getEmployee();
 		}

@@ -57,7 +57,7 @@ public class ExpenseService {
 	@POST
 	@Path("/getProjectCodeSuggestion")
 	@Produces("application/json")
-	public Suggestions getProjectCodeSuggestion(@FormParam("keyword") String keyword) {
+	public Suggestions getProjectCodeSuggestion(@FormParam("keyword") String keyword, @Context HttpServletResponse response) {
 		List<String> suggestions = new ArrayList<String>();
 		int nrOfSuggestions = 0;
 		Iterator<String> it = projectCodes.iterator();
@@ -72,6 +72,7 @@ public class ExpenseService {
 		Suggestions results = new Suggestions();
 		results.setData(suggestions);
 		Collections.sort(suggestions);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		return results;
 	}
 
@@ -81,6 +82,7 @@ public class ExpenseService {
 	@Produces("application/json")
 	public Errors saveExpense(ExpenseRequest expenseRequest, @Context HttpServletResponse response) {
 		ExpenseContext expContext = TokenUtil.accessToken(context, expenseRequest.getToken());
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		if (expContext != null) {
 			if (expenseRequest.getExpenseForm() == null) {
 				Response.status(401);
@@ -103,8 +105,9 @@ public class ExpenseService {
 
 	@POST
 	@Path("/getExpenseForms")
-	public List<ExpenseForm> getExpenseForms(@FormParam("token") String token) {
+	public List<ExpenseForm> getExpenseForms(@FormParam("token") String token, @Context HttpServletResponse response) {
 		ExpenseContext expContext = TokenUtil.accessToken(context, token);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		if (expContext != null) {
 			if (expContext.getEmployee().getRole().equals("admin")) {
 				return Store.getInstance().getAll();
@@ -119,6 +122,7 @@ public class ExpenseService {
 	@Path("/getExpenseFormPDF")
 	public void getExpenseFormPDF(@FormParam("token") String token, @FormParam("expenseFormId") int expenseFormId, @Context HttpServletResponse response) {
 		ExpenseContext expContext = TokenUtil.accessToken(context, token);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		if (expContext != null) {
 			ExpenseForm form = Store.getInstance().getExpenseFormById(expenseFormId);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
