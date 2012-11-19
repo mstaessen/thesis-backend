@@ -50,17 +50,17 @@ public class UserService {
 	@Path("/login")
 	public String login(@FormParam("email") String email, @FormParam("password") String password, @Context HttpServletResponse response) {
 		String token = null;
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		Iterator<Employee> it = employeeSet.iterator();
 		while (it.hasNext()) {
 			Employee emp = it.next();
 			if (StringUtils.areStringsEqual(emp.getEmail(), email) && StringUtils.areStringsEqual(emp.getPassword(), password)) {
 				token = UUID.randomUUID().toString();
 				context.setAttribute(token, new ExpenseContext(emp, new Date()));
-				response.setHeader("Access-Control-Allow-Origin", "*");
 				return token;
 			}
 		}
-		response.setHeader("Access-Control-Allow-Origin", "*");
+		
 		return token;
 
 	}
@@ -68,6 +68,7 @@ public class UserService {
 	@POST
 	@Path("/logout")
 	public void logout(@FormParam("token") String token, @Context HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		context.removeAttribute(token);
 	}
 

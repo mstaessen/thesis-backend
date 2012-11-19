@@ -143,8 +143,9 @@ public class ExpenseService {
 
 	@POST
 	@Path("/changeState")
-	public void changeState(@FormParam("token") String token, @FormParam("expenseFormId") int expenseFormId, @FormParam("statusId") int statusId) {
+	public void changeState(@FormParam("token") String token, @FormParam("expenseFormId") int expenseFormId, @FormParam("statusId") int statusId, @Context HttpServletResponse response) {
 		ExpenseContext expContext = TokenUtil.accessToken(context, token);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		if (expContext != null && expContext.getEmployee().getRole().equals("admin")) {
 			Store.getInstance().saveState(expenseFormId, statusId);
 		}
