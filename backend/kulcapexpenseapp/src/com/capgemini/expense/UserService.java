@@ -7,8 +7,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -45,6 +47,13 @@ public class UserService {
 		employeeSet.add(emp7);
 		employeeSet.add(emp8);
 	}
+	
+	@OPTIONS
+    @Path("/login")
+    public void login(@FormParam("email") String email, @FormParam("password") String password, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/login")
@@ -64,6 +73,13 @@ public class UserService {
 		return token;
 
 	}
+	
+	@OPTIONS
+    @Path("/logout")
+    public void logout(@FormParam("token") String token, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/logout")
@@ -71,6 +87,13 @@ public class UserService {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		context.removeAttribute(token);
 	}
+	
+	@OPTIONS
+    @Path("/getEmployee")
+    public void getEmployee(@FormParam("token") String token, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/getEmployee")

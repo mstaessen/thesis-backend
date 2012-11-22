@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -53,6 +55,14 @@ public class ExpenseService {
 		projectCodes.add("G35TTTT");
 		projectCodes.add("G35EEEEE");
 	}
+	
+	
+	@OPTIONS
+    @Path("/getProjectCodeSuggestion")
+    public void getProjectCodeSuggestion(@FormParam("keyword") String keyword, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/getProjectCodeSuggestion")
@@ -75,6 +85,13 @@ public class ExpenseService {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		return results;
 	}
+	
+	@OPTIONS
+    @Path("/saveExpense")
+    public void saveExpense(ExpenseRequest expenseRequest, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/saveExpense")
@@ -102,6 +119,13 @@ public class ExpenseService {
 		return null;
 
 	}
+	
+  	@OPTIONS
+    @Path("/getExpenseForms")
+    public void getExpenseFormsOptions(@FormParam("token") String token, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/getExpenseForms")
@@ -117,6 +141,14 @@ public class ExpenseService {
 		}
 		return null;
 	}
+	
+	
+	@OPTIONS
+    @Path("/getExpenseFormPDF")
+    public void getExpenseFormPDF(@FormParam("token") String token, @FormParam("expenseFormId") int expenseFormId, @Context HttpServletResponse response, @Context HttpServletRequest req) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","X-Requested-With");
+    }
 
 	@POST
 	@Path("/getExpenseFormPDF")
