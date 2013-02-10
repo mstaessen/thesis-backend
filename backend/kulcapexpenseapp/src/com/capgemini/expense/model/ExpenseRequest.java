@@ -9,23 +9,23 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlType
 public class ExpenseRequest {
-	private String token;
-	private ExpenseForm expenseForm;
+    private String token;
+    private ExpenseForm expenseForm;
 
-	public String getToken() {
-		return token;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-	public ExpenseForm getExpenseForm() {
-		return expenseForm;
-	}
+    public ExpenseForm getExpenseForm() {
+        return expenseForm;
+    }
 
-	public void setExpenseForm(ExpenseForm expenseForm) {
-		this.expenseForm = expenseForm;
-	}
+    public void setExpenseForm(ExpenseForm expenseForm) {
+        this.expenseForm = expenseForm;
+    }
 
 }

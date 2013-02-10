@@ -11,14 +11,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class Errors {
-	private List<String> errors;
+    private List<String> errors;
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public List<String> getErrors() {
+        return errors;
+    }
 
-	public void setErrors(List<String> errors) {
-		this.errors = errors;
-	}
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
+    }
 
 }

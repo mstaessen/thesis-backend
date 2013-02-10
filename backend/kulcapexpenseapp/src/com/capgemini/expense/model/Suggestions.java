@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class Suggestions {
 
-	private List<String> data;
+    private List<String> data;
 
-	public List<String> getData() {
-		return data;
-	}
+    public List<String> getData() {
+        return data;
+    }
 
-	public void setData(List<String> data) {
-		this.data = data;
-	}
+    public void setData(List<String> data) {
+        this.data = data;
+    }
 
 }
